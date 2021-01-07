@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Flask app</title>
+    <link href="/static/CSS/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <form>
+
+        <div class="segment">
+            <h2>Calculate Turbine Power</h2>
+        </div>
+        <div>
+            <label>
+                <input type="number" name="speed" id="speedValue" placeholder="Enter Speed" required />
+            </label>
+            <label>
+                <input type="name" id="powerValue" readonly />
+            </label>
+            <button class="red" type="button" onclick="calculateTurbinePower();">Calculate</button>
+        </div>
+    </form>
+
+</body>
+
+<script>
+    function calcPower(otherPrams) {
+        value = fetch('/calculate/power', otherPrams)
+            .then(data => { return data.json() })
+            .then(res => { return res })
+            .catch(error => console.log(error))
+        return value
+    }
+
+    // Adapted from stack overflow posts.
+    async function calculateTurbinePower() {
+        var speed = document.getElementById("speedValue").value
+        var power = document.getElementById('powerValue').value = "Please wait...";
+
+        const otherPrams = {
+            body: JSON.stringify({ speed: speed }),
+            method: "POST"
+        }
+        document.getElementById('powerValue').value = await calcPower(otherPrams);
+        console.log("stuff " + await calcPower(otherPrams))
+    }
+</script>
+
+</html>
