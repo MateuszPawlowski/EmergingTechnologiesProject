@@ -20,41 +20,32 @@
             <label>
                 <!-- Outputs the power value -->
                 <input type="name" id="powerValue" readonly />
-            </label>  
+            </label>
             <!-- Pressing the button calls the caluclate function to calculate turbine power -->
-            <button class="red" type="button" onclick="calculateTurbinePower();">Calculate</button>
+            <button class="red" type="button" onclick="postData();">Calculate</button>
         </div>
     </form>
-
 </body>
 
 <script>
-    // get the data from webservice
-    function calcPower(response) {
-        value = fetch('/calculate/power', response)
-            .then(data => { return data.json() })
-            .then(res => { return res })
-            .catch(error => console.log(error))
-        return value
+
+    async function postData() {
+        // get the element speedValue
+        var speed = document.getElementById("speedValue");
+        const value = await fetch('/calculate/power',
+            {
+                method: 'POST', body: JSON.stringify({ speed: speed.value })
+            }).then(data => {
+                return data.json()
+            }).then(res => {
+                return res
+            }).catch((err) => {
+                console.log(err);
+            });
+        // get the element powerValue
+        document.getElementById('powerValue').value = value;
     }
 
-    // function to get the turbing power
-    async function calculateTurbinePower() {
-        // getting the element of speed and storing that value into a variable
-        // same for power
-        var speed = document.getElementById("speedValue").value
-        var power = document.getElementById('powerValue').value = "Please wait...";
-
-        // return the speed value as string from JSON
-        const response = {
-            body: JSON.stringify({ speed: speed }),
-            method: "POST"
-        }
-
-        // get the element of power and call the calcPower function in order to calculate it
-        document.getElementById('powerValue').value = await calcPower(response);
-        console.log(await calcPower(response))
-    }
 </script>
 
 </html>
