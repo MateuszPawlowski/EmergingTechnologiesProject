@@ -2,23 +2,26 @@
 <html lang="en">
 
 <head>
-    <title>Flask app</title>
+    <title>Emergin Tech</title>
+    <!-- Getting the CSS -->
     <link href="/static/CSS/style.css" rel="stylesheet">
 </head>
 
 <body>
     <form>
-
         <div class="segment">
             <h2>Calculate Turbine Power</h2>
         </div>
         <div>
             <label>
+                <!-- Place your speed value -->
                 <input type="number" name="speed" id="speedValue" placeholder="Enter Speed" required />
             </label>
             <label>
+                <!-- Outputs the power value -->
                 <input type="name" id="powerValue" readonly />
-            </label>
+            </label>  
+            <!-- Pressing the button calls the caluclate function to calculate turbine power -->
             <button class="red" type="button" onclick="calculateTurbinePower();">Calculate</button>
         </div>
     </form>
@@ -26,25 +29,31 @@
 </body>
 
 <script>
-    function calcPower(otherPrams) {
-        value = fetch('/calculate/power', otherPrams)
+    // get the data from webservice
+    function calcPower(response) {
+        value = fetch('/calculate/power', response)
             .then(data => { return data.json() })
             .then(res => { return res })
             .catch(error => console.log(error))
         return value
     }
 
-    // Adapted from stack overflow posts.
+    // function to get the turbing power
     async function calculateTurbinePower() {
+        // getting the element of speed and storing that value into a variable
+        // same for power
         var speed = document.getElementById("speedValue").value
         var power = document.getElementById('powerValue').value = "Please wait...";
 
-        const otherPrams = {
+        // return the speed value as string from JSON
+        const response = {
             body: JSON.stringify({ speed: speed }),
             method: "POST"
         }
-        document.getElementById('powerValue').value = await calcPower(otherPrams);
-        console.log("stuff " + await calcPower(otherPrams))
+
+        // get the element of power and call the calcPower function in order to calculate it
+        document.getElementById('powerValue').value = await calcPower(response);
+        console.log(await calcPower(response))
     }
 </script>
 

@@ -1,4 +1,5 @@
-numpy
-tensorflow
-panda
-flask
+numpy==1.19.2
+pandas == 1.1.3
+tensorflow==2.4.0
+matplotlib == 3.3.2
+Flask==1.1.2
